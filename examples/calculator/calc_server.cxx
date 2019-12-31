@@ -210,7 +210,7 @@ int main(int argc, char** argv) {
     std::cout << "    Server ID:    " << stuff.server_id_ << std::endl;
     std::cout << "    Endpoint:     " << stuff.endpoint_ << std::endl;
     init_raft( cs_new<calc_state_machine>() );
-    loop();
+    loop("calc");
 
     return 0;
 }

@@ -17,6 +17,8 @@ limitations under the License.
 
 #pragma once
 
+#include <readline/readline.h>
+
 using namespace nuraft;
 
 using raft_result = cmd_result< ptr<buffer> >;
@@ -128,17 +130,47 @@ std::vector<std::string> tokenize(const char* str, char c = ' ') {
     return tokens;
 }
 
-void loop() {
-    char cmd[1000];
-    std::string prompt = "calc " + std::to_string(stuff.server_id_) + "> ";
-    while (true) {
-#if defined(__linux__) || defined(__APPLE__)
-        std::cout << _CLM_GREEN << prompt << _CLM_END;
-#else
-        std::cout << prompt;
-#endif
-        std::cin.getline(cmd, 1000);
 
+/* A static variable for holding the line. */
+static char *line_read = (char *)NULL;
+
+/* Read a string, and return a pointer to it.
+   Returns NULL on EOF. */
+char *
+rl_gets (const std::string prompt)
+{
+    /* If the buffer has already been allocated,
+       return the memory to the free pool. */
+    if (line_read)
+    {
+        free (line_read);
+        line_read = (char *)NULL;
+    }
+
+    /* Get a line from the user. */
+    line_read = readline (prompt.c_str());
+
+    /* If the line has any text in it,
+       save it on the history. */
+    if (line_read && *line_read)
+        add_history (line_read);
+
+    return (line_read);
+}
+
+void loop(const std::string& program_name) {
+    //char cmd[1000];
+    std::string prompt = program_name + std::to_string(stuff.server_id_) + "> ";
+
+    while (true) {
+        std::ostringstream pp;
+#if defined(__linux__) || defined(__APPLE__)
+        pp << _CLM_GREEN << prompt << _CLM_END;
+#else
+        pp << prompt;
+#endif
+        //std::cin.getline(cmd, 1000);
+        char* cmd = rl_gets(pp.str());
         std::vector<std::string> tokens = tokenize(cmd);
         bool cont = do_cmd(tokens);
         if (!cont) break;
@@ -185,6 +217,8 @@ void init_raft(ptr<state_machine> sm_instance) {
     // According to this method, `append_log` function
     // should be handled differently.
     params.return_method_ = CALL_TYPE;
+    //对follower的
+    params.auto_forwarding_ = true;
 
     // Initialize Raft server.
     stuff.raft_instance_ = stuff.launcher_.init(stuff.sm_,

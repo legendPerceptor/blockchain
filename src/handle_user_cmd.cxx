@@ -168,6 +168,8 @@ ptr< cmd_result< ptr<buffer> > > raft_server::send_msg_to_leader(ptr<req_msg>& r
     ptr< cmd_result< ptr<buffer> > >
         presult( cs_new< cmd_result< ptr<buffer> > >() );
 
+    presult->set_result_code(cmd_result_code::NOT_LEADER);
+
     rpc_handler handler = [presult]
                           ( ptr<resp_msg>& resp,
                             ptr<rpc_exception>& err ) -> void

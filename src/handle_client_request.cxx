@@ -84,15 +84,17 @@ ptr<resp_msg> raft_server::handle_cli_req(req_msg& req) {
     for (size_t i = 0; i < num_entries; ++i) {
         // force the log's term to current term
         entries.at(i)->set_term(cur_term);
+        // 这里为了修改seq 和Prehash把precommit放在store log entry之前
+        ptr<buffer> buf = entries.at(i)->get_buf_ptr();
+        buf->pos(0);
+        ret_value = state_machine_->pre_commit_ext
+                ( state_machine::ext_op_params( last_idx, buf ) );
 
         ulong next_slot = store_log_entry(entries.at(i));
         p_db("append at log_idx %d\n", (int)next_slot);
         last_idx = next_slot;
 
-        ptr<buffer> buf = entries.at(i)->get_buf_ptr();
-        buf->pos(0);
-        ret_value = state_machine_->pre_commit_ext
-                    ( state_machine::ext_op_params( last_idx, buf ) );
+        
     }
     if (num_entries) {
         log_store_->end_of_append_batch(last_idx - num_entries, num_entries);

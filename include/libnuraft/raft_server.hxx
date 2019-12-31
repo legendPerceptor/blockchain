@@ -587,6 +587,15 @@ protected:
     ptr<resp_msg> handle_leadership_takeover(req_msg& req,
                                              ptr<custom_notification_msg> msg,
                                              ptr<resp_msg> resp);
+//    
+//    int32 get_id() {
+//        return id_;
+//    }
+//
+//    int get_leader_id(){
+//        return leader_;
+//    }
+
 
 protected:
     static const int default_snapshot_sync_block_size;
