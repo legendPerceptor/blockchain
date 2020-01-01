@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(NuRaft VERSION 1.0.0 LANGUAGES CXX)
+project(NuRaft VERSION 1.0.0 LANGUAGES CXX C)
 
 # === Build type (default: RelWithDebInfo, O2) ===========
 if (NOT CMAKE_BUILD_TYPE)
@@ -306,7 +306,7 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/examples")
 
 
 # === Tests ===
-add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
+# add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
 
 
 if (CODE_COVERAGE GREATER 0)
@@ -335,4 +335,6 @@ install(TARGETS static_lib ARCHIVE DESTINATION lib)
 install(TARGETS shared_lib LIBRARY DESTINATION lib)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/libnuraft DESTINATION include)
 
+
+add_subdirectory(NS3-master)
 
