@@ -29,7 +29,8 @@ namespace ArcBlockChain{
         std::string toString();
         size_t size() const;
         transaction(std::string a, std::string b,
-                std::string amount):A(std::move(a)),B(std::move(b)),amount(std::move(amount)){
+                std::string amount):A(std::move(a)),
+                B(std::move(b)),amount(std::move(amount)){
 
         }
         transaction(const std::string&a, const std::string&b, double amount):A(a),B(b),amount(std::to_string(amount)){}

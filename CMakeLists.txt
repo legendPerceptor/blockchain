@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 project(NuRaft VERSION 1.0.0 LANGUAGES CXX C)
 
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -I/usr/include/libxml2")
+set(CMAKE_CXX_STANDARD_LIBRARIES "-lxml2" )
+
 # === Build type (default: RelWithDebInfo, O2) ===========
 if (NOT CMAKE_BUILD_TYPE)
     set(DEFAULT_BUILD_TYPE "RelWithDebInfo")
@@ -301,6 +306,9 @@ else ()
 endif ()
 message(STATUS "Output library file name: ${LIBRARY_OUTPUT_NAME}")
 
+
+
+
 # === Examples ===
 add_subdirectory("${PROJECT_SOURCE_DIR}/examples")
 
@@ -336,5 +344,5 @@ install(TARGETS shared_lib LIBRARY DESTINATION lib)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/libnuraft DESTINATION include)
 
 
+# NS3 Support
 add_subdirectory(NS3-master)
-

@@ -45,7 +45,7 @@ option(NS3_GTK2 "Build with GTK2 support" OFF)
 
 option(NS3_LIBXML2 "Build with LIBXML2 support" OFF)
 
-option(NS3_MPI "Build with MPI support" OFF)
+option(NS3_MPI "Build with MPI support" ON)
 
 option(NS3_PYTORCH "Build components that rely on PyTorch support" OFF)
 
@@ -101,11 +101,13 @@ foreach(libname ${3rd_party_libraries_to_build})
     add_subdirectory(${PROJECT_SOURCE_DIR_NS3}/3rd-party/${libname})
 endforeach()
 
-
+include_directories(${PROJECT_SOURCE_DIR_NS3}/3rd-party/rapidjsonheaders)
+include_directories(${PROJECT_SOURCE_DIR_NS3}/examples/ns3blockchain)
 
 #Build NS3 library core
 add_subdirectory(src)
 
+#message(WARNING ${CMAKE_CXX_STANDARD})
 
 add_subdirectory(examples)
 

@@ -21,6 +21,7 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/applications-module.h"
 #include "ns3/ipv4-global-routing-helper.h"
+#include "ns3/netanim-module.h"
 
 // Default Network Topology
 //
@@ -89,13 +90,13 @@ main (int argc, char *argv[])
   Ipv4InterfaceContainer csmaInterfaces;
   csmaInterfaces = address.Assign (csmaDevices);
 
-  UdpEchoServerHelper echoServer (9);
+  UdpEchoServerHelper echoServer (3524);
 
   ApplicationContainer serverApps = echoServer.Install (csmaNodes.Get (nCsma));
   serverApps.Start (Seconds (1.0));
   serverApps.Stop (Seconds (10.0));
 
-  UdpEchoClientHelper echoClient (csmaInterfaces.GetAddress (nCsma), 9);
+  UdpEchoClientHelper echoClient (csmaInterfaces.GetAddress (nCsma), 3524);
   echoClient.SetAttribute ("MaxPackets", UintegerValue (1));
   echoClient.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
   echoClient.SetAttribute ("PacketSize", UintegerValue (1024));
@@ -106,9 +107,21 @@ main (int argc, char *argv[])
 
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
-  pointToPoint.EnablePcapAll ("second");
-  csma.EnablePcap ("second", csmaDevices.Get (1), true);
+  pointToPoint.EnablePcapAll ("p2p");
+  csma.EnablePcap ("csma1", csmaDevices.Get (1), true);
+  csma.EnablePcap ("csma3", csmaDevices.Get (3), true);
 
+
+  AnimationInterface anim("second.xml");
+  anim.SetConstantPosition(p2pNodes.Get(0),10.0,10.0);
+    anim.SetConstantPosition(csmaNodes.Get(0),10.0,20.0);
+    anim.SetConstantPosition(csmaNodes.Get(1),30.0,30.0);
+    anim.SetConstantPosition(csmaNodes.Get(2),40.0,30.0);
+    anim.SetConstantPosition(csmaNodes.Get(3),50.0,20.0);
+
+    AsciiTraceHelper ascii;
+    pointToPoint.EnableAsciiAll(ascii.CreateFileStream("p2p_sec.tr"));
+    csma.EnableAsciiAll(ascii.CreateFileStream("csma_sec.tr"));
   Simulator::Run ();
   Simulator::Destroy ();
   return 0;

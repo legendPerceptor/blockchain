@@ -344,7 +344,7 @@ public:
    *                  a log level helps prevent recursion by logging in
    *                  functions which help implement the logging facility.
    */
-  LogComponent (const std::string & name,
+  LogComponent (const char *name,
                 const std::string & file,
                 const enum LogLevel mask = LOG_NONE);
   /**

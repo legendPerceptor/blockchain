@@ -290,11 +290,11 @@ macro(process_options)
 
     #Set C++ standard
     if(${NS3_PYTORCH})
-        set(CMAKE_CXX_STANDARD 11) #c++17 for inline variables in Windows
+        set(CMAKE_CXX_STANDARD 17) #c++17 for inline variables in Windows
         set(CMAKE_CXX_STANDARD_REQUIRED OFF) #ABI requirements for PyTorch affect this
         add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0 -Dtorch_EXPORTS -DC10_BUILD_SHARED_LIBS -DNS3_PYTORCH)
     else()
-        set(CMAKE_CXX_STANDARD 11) #c++17 for inline variables in Windows
+        set(CMAKE_CXX_STANDARD 17) #c++17 for inline variables in Windows
         set(CMAKE_CXX_STANDARD_REQUIRED ON)
     endif()
 

@@ -13,7 +13,7 @@ New features that are not described in the [original paper](https://raft.github.
 Features
 --------
 ### In the original cornerstone ###
-* Core Raft algorithm
+* Core Raft algoritbiahm
     * Log replication & compaction
     * Leader election
     * Snapshot

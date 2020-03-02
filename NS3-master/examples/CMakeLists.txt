@@ -15,6 +15,7 @@ if (${NS3_EXAMPLES})
          #   tcp
          #   traffic-control
             tutorial
+            ns3blockchain
          #   udp
          #   udp-client-server
          #   wireless
